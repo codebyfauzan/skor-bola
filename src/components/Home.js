@@ -1,68 +1,25 @@
 import React from "react";
-import { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import Box from "@mui/material/Box";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import PropTypes from "prop-types";
-import Typography from "@mui/material/Typography";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import { CardActionArea } from "@mui/material";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Link from "@mui/material/Link";
-import { GlobalContext } from "../context/GlobalContext";
 
-function TabPanel(props) {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <div
-      role="tabpanel"
-      hidden={value !== index}
-      id={`simple-tabpanel-${index}`}
-      aria-labelledby={`simple-tab-${index}`}
-      {...other}
-    >
-      {value === index && (
-        <Box sx={{ p: 3 }}>
-          <Typography>{children}</Typography>
-        </Box>
-      )}
-    </div>
-  );
-}
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.number.isRequired,
-  value: PropTypes.number.isRequired,
-};
-
-// function a11yProps(index) {
-//   return {
-//     id: `simple-tab-${index}`,
-//     "aria-controls": `simple-tabpanel-${index}`,
-//   };
-// }
+import M from "materialize-css";
 
 // variables
 const API_KEY = "7b30bea235784fd8bd4548d09897b06e";
 
 // main component
-function Home() {
-  const { navigate } = useContext(GlobalContext);
-  const [value, setValue] = useState(0);
-  const [data, setData] = useState(null);
+class Home extends React.Component {
+  constructor(props) {
+    super(props);
+    this.tabsRef = React.createRef();
+    this.teamDataRef = React.createRef();
+    this.state = {
+      value: 0, // bisa untuk ngecek value tab
+      data: null,
+    };
+  }
 
-  useEffect(() => {
+  componentDidMount() {
+    M.Tabs.init(this.tabsRef.current);
     axios
       .get(`https://api.football-data.org/v2/competitions/2021/standings`, {
         headers: {
@@ -70,135 +27,140 @@ function Home() {
         },
       })
       .then((res) => {
-        console.log(res.data);
-        setData(res.data);
+        this.setState({ data: res.data });
+        console.log(res.data.standings[0].table);
       })
       .catch((error) => {
         console.log(error);
       });
-  }, []);
+  }
 
-  const handleChange = (event, newValue) => {
-    setValue(newValue);
-    console.log(value);
-  };
+  // const handleChange = (event, newValue) => {
+  //   setValue(newValue);
+  //   console.log(value);
+  // };
 
-  const getDetailTeam = (event) => {
-    let idData = parseInt(event.target.value);
+  getDetailTeam = (event) => {
+    let idData = event.currentTarget.id;
     console.log(idData);
-    // navigate(`/team/${idData}`);
+    window.location.href = `/team/${idData}`;
   };
 
-  return (
-    <Box sx={{ width: "100%" }}>
-      <Box sx={{ width: "100%", bgcolor: "background.paper" }}>
-        <Tabs value={value} onChange={handleChange} centered>
-          <Tab label="Top 3" />
-          <Tab label="Standings" />
-          <Tab label="Favourites" />
-        </Tabs>
-      </Box>
+  render() {
+    return (
+      <>
+        <div className="nav-content">
+          <ul ref={this.tabsRef} className="tabs">
+            <li className="tab">
+              <a href="#standings" className="active">
+                Standings
+              </a>
+            </li>
+            <li className="tab">
+              <a href="#matches">Matches</a>
+            </li>
+            <li className="tab">
+              <a href="#favourites">Favourites</a>
+            </li>
+          </ul>
+        </div>
 
-      {/*---------------- TAB Standings -----------------*/}
-      <TabPanel value={value} index={0}>
-        {data !== null &&
-          data.standings[0].table.slice(0, 3).map((res) => {
-            return (
-              <Card key={res.team.id} sx={{ maxWidth: 345 }}>
-                <CardActionArea>
-                  <CardMedia
-                    component="img"
-                    height="140"
-                    image={res.team.crestUrl}
-                    alt={res.team.name}
-                  />
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="div">
-                      {res.team.name}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      Position {res.position}
-                    </Typography>
-                  </CardContent>
-                </CardActionArea>
-              </Card>
-            );
-          })}
-      </TabPanel>
+        <div id="standings" className="col s12">
+          <table className="highlight">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Team</th>
+                <th>P</th>
+                <th>W</th>
+                <th>D</th>
+                <th>L</th>
+                <th>Goals</th>
+                <th>PTS</th>
+              </tr>
+            </thead>
 
-      {/*--------------- TAB Matches ----------------*/}
-      <TabPanel value={value} index={1}>
-        <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>#</TableCell>
-                <TableCell>Team</TableCell>
-                <TableCell>P</TableCell>
-                <TableCell>W</TableCell>
-                <TableCell>D</TableCell>
-                <TableCell>L</TableCell>
-                <TableCell>Goals</TableCell>
-                <TableCell>PTS</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data !== null &&
-                data.standings[0].table.map((res) => {
+            <tbody>
+              {this.state.data !== null &&
+                this.state.data.standings[0].table.map((res) => {
                   return (
-                    <TableRow
-                      Value={res.team.id}
-                      onClick={getDetailTeam}
+                    <tr
+                      ref={this.teamDataRef}
                       key={res.team.id}
-                      sx={{
-                        "&:last-child td, &:last-child th": { border: 0 },
-                        "&:hover": { backgroundColor: "grey.200" },
-                        cursor: "pointer",
-                      }}
+                      id={res.team.id}
+                      onClick={this.getDetailTeam}
                     >
-                      <TableCell
-                        component="th"
-                        scope="row"
-                        value={res.team.id}
-                        onClick={getDetailTeam}
-                      >
-                        {res.position}
-                      </TableCell>
-                      <TableCell value={res.team.id} onClick={getDetailTeam}>
-                        {res.team.name}
-                      </TableCell>
-                      <TableCell value={res.team.id} onClick={getDetailTeam}>
-                        {res.playedGames}
-                      </TableCell>
-                      <TableCell value={res.team.id} onClick={getDetailTeam}>
-                        {res.won}
-                      </TableCell>
-                      <TableCell value={res.team.id} onClick={getDetailTeam}>
-                        {res.draw}
-                      </TableCell>
-                      <TableCell value={res.team.id} onClick={getDetailTeam}>
-                        {res.lost}
-                      </TableCell>
-                      <TableCell value={res.team.id} onClick={getDetailTeam}>
+                      <td>{res.position}</td>
+                      <td>{res.team.name}</td>
+                      <td>{res.playedGames}</td>
+                      <td>{res.won}</td>
+                      <td>{res.draw}</td>
+                      <td>{res.lost}</td>
+                      <td>
                         {res.goalsFor}:{res.goalsAgainst}
-                      </TableCell>
-                      <TableCell value={res.team.id} onClick={getDetailTeam}>
-                        {res.points}
-                      </TableCell>
-                    </TableRow>
+                      </td>
+                      <td>{res.points}</td>
+                    </tr>
                   );
                 })}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </TabPanel>
-
-      {/* TAB Favourites */}
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-    </Box>
-  );
+            </tbody>
+          </table>
+        </div>
+        <div id="matches" className="col s12">
+          <ul className="collection">
+            <li className="collection-item avatar">
+              <img src="images/yuna.jpg" alt="" className="circle" />
+              <span className="title">Title</span>
+              <p>
+                First Line <br />
+                Second Line
+              </p>
+              <a href="#!" className="secondary-content">
+                <i className="material-icons">grade</i>
+              </a>
+            </li>
+            <li className="collection-item avatar">
+              <i className="material-icons circle">folder</i>
+              <i className="material-icons circle">folder</i>
+              <span className="title">Title</span>
+              <p>
+                First Line <br />
+                Second Line
+              </p>
+              <a href="#!" className="secondary-content">
+                <i className="material-icons">grade</i>
+              </a>
+            </li>
+            <li className="collection-item avatar">
+              <i className="material-icons circle green">insert_chart</i>
+              <span className="title">Title</span>
+              <p>
+                First Line <br />
+                Second Line
+              </p>
+              <a href="#!" className="secondary-content">
+                <i className="material-icons">grade</i>
+              </a>
+            </li>
+            <li className="collection-item avatar">
+              <i className="material-icons circle red">play_arrow</i>
+              <span className="title">Title</span>
+              <p>
+                First Line <br />
+                Second Line
+              </p>
+              <a href="#!" className="secondary-content">
+                <i className="material-icons">grade</i>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div id="favourites" className="col s12">
+          Favourties
+        </div>
+      </>
+    );
+  }
 }
 
 export default Home;

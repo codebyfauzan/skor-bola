@@ -3,11 +3,10 @@ import "./App.css";
 // import MuiButton from "./components/MuiButton";
 // import MuiNavbar from "./components/MuiNavbar";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { GlobalProvider } from "./context/GlobalContext";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import { GlobalProvider } from "./context/GlobalContext";
+import TeamDetail from "./components/TeamDetail";
 
 function App() {
   return (
@@ -17,13 +16,11 @@ function App() {
         {/* <MuiButton /> */}
         {/* <MuiNavbar /> */}
         <Navbar />
-        <Box component="main" sx={{ p: 3 }}>
-          <Toolbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/team/:IdData" element={<Home />} />
-          </Routes>
-        </Box>
+
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/team/:IdData" element={<TeamDetail />} />
+        </Routes>
       </GlobalProvider>
     </BrowserRouter>
   );

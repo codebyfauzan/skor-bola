@@ -1,36 +1,56 @@
-import React from "react";
-import Card from "@mui/material/Card";
-import CardActions from "@mui/material/CardActions";
-import CardContent from "@mui/material/CardContent";
-import CardMedia from "@mui/material/CardMedia";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import idb from "idb";
+// import "./App.css";
+
+// variables
+const API_KEY = "7b30bea235784fd8bd4548d09897b06e";
 
 function TeamDetail() {
   let { IdData } = useParams();
+
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    axios
+      .get(`https://api.football-data.org/v2/teams/${IdData}`, {
+        headers: {
+          "X-Auth-Token": API_KEY,
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+        setData(res.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, [IdData]);
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        component="img"
-        height="140"
-        image="/static/images/cards/contemplative-reptile.jpg"
-        alt="green iguana"
-      />
-      <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {IdData}
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          Lizards are a widespread group of squamate reptiles, with over 6,000
-          species, ranging across all continents except Antarctica
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <Button size="small">Share</Button>
-        <Button size="small">Learn More</Button>
-      </CardActions>
-    </Card>
+    <>
+      {data !== null && (
+        <div className="team-data row ">
+          <div className="col s12 center-align">
+            <img src={data.crestUrl} alt={data.name} height="200" />
+          </div>
+          <div className="col s12 center-align">
+            <p>
+              Name : <strong>{data.name}</strong>
+            </p>
+            <p>
+              Address : <strong>{data.address}</strong>
+            </p>
+            <p>
+              Venue : <strong>{data.venue}</strong>
+            </p>
+            <button className="waves-effect waves-light btn">
+              <i className="material-icons left">add_circle</i>Add to Favourites
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
