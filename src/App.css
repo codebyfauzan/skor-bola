@@ -1,8 +1,61 @@
-.mx-auto {
-  margin-left: auto;
-  margin-right: auto;
+.tabs-container {
+  width: 100%;
+}
+
+.tabs .tab {
+  flex-grow: 1;
+}
+
+.tabs .indicator {
+  background-color: #fff !important;
 }
 
 .team-data {
   margin: 3rem;
+}
+
+.circle2 {
+  position: absolute;
+  width: 42px;
+  height: 42px;
+  overflow: hidden;
+  left: 15px;
+  bottom: 20px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.match-item {
+  display: flex;
+  padding: 10px 0 !important;
+}
+
+.home-team {
+  margin-bottom: 10px;
+}
+
+.home-team, .away-team {
+  display: flex;
+  justify-content: space-between;
+}
+
+.home-team-info {
+  vertical-align: center;
+  display: flex;
+}
+
+.team-img {
+  width: 20px;
+  margin-right: 8px;
+}
+
+.times {
+  border-left: 1px solid #bdbdbd;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.date, .time {
+  margin: 0;
 }
