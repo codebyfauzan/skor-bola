@@ -30,10 +30,10 @@ function Matches() {
     return `${date}-${month}-${year}`;
   };
 
-  const handleTime = (utcdate) => {
-    let hours = utcdate.substring(11, 13);
+  const handleStatus = (res) => {
+    let hours = res.utcDate.substring(11, 13);
     hours = Number(hours) + 7;
-    let minutes = utcdate.substring(14, 16);
+    let minutes = res.utcDate.substring(14, 16);
 
     // Mengubah format GMT ke format 24 jam WIB
     if (Number(hours) > 24) {
@@ -42,10 +42,34 @@ function Matches() {
       hours = `0${hours}`;
     }
 
-    return `${hours}:${minutes}`;
+    if (res.status === "FINISHED") {
+      return "FT";
+    } else if (res.status === "POSTPONED") {
+      return "Postponed";
+    } else {
+      return `${hours}:${minutes} WIB`;
+    }
   };
+
+  const handleTeamName = (teamName) => {
+    let shortenTeamName = teamName.split("FC").join("");
+
+    if (teamName === "AFC Bournemouth") {
+      shortenTeamName = teamName;
+    }
+    if (teamName === "Wolverhampton Wanderers FC") {
+      shortenTeamName = "Wolverhampton";
+    }
+
+    return shortenTeamName;
+  };
+
+  const timeElementClass = (status) => {
+    return status === "POSTPONED" ? "red-medium" : "";
+  };
+
   return (
-    <div className="container">
+    <div className="container container-sm">
       <div className="row">
         <ul className="collection">
           {data !== null &&
@@ -55,42 +79,34 @@ function Matches() {
                   <div className="teams col s8">
                     <div className="home-team">
                       <span className="home-team-info">
-                        {/* <img
-                          className="team-img"
-                          src="https://crests.football-data.org/354.png"
-                          alt=""
-                        /> */}
                         <span className="home-team-name">
-                          {res.homeTeam.name}
+                          {handleTeamName(res.homeTeam.name)}
                         </span>
                       </span>
                       <strong className="home-team-score team-score right-align">
                         {res.score.fullTime.homeTeam == null
-                          ? "-"
+                          ? ""
                           : res.score.fullTime.homeTeam}
                       </strong>
                     </div>
                     <div className="away-team">
                       <span className="away-team-info">
-                        {/* <img
-                          className="team-img"
-                          src="https://crests.football-data.org/354.png"
-                          alt=""
-                        /> */}
                         <span className="away-team-name">
-                          {res.awayTeam.name}
+                          {handleTeamName(res.awayTeam.name)}
                         </span>
                       </span>
                       <strong className="away-team-score team-score right-align">
                         {res.score.fullTime.awayTeam == null
-                          ? "-"
+                          ? ""
                           : res.score.fullTime.awayTeam}
                       </strong>
                     </div>
                   </div>
                   <div className="times col s4 center-align">
                     <p className="date">{handleDate(res.utcDate)}</p>
-                    <p className="time">{handleTime(res.utcDate)} WIB</p>
+                    <p className={`time ${timeElementClass(res.status)}`}>
+                      {handleStatus(res)}
+                    </p>
                   </div>
                 </li>
               );

@@ -1,3 +1,33 @@
+/* General class */
+
+@media screen and (max-width: 576px) {
+  .container-sm {
+    width: 100%;
+    margin: 0 !important;
+  }
+}
+
+/* General Class End */
+
+/* Typography */
+.red-medium {
+  color: red;
+  font-weight: 500;
+}
+
+.fw-400 {
+  font-weight: 400 !important;
+}
+
+.fw-700 {
+  font-weight: 700 !important;
+}
+
+
+/* Typography End */
+
+/* Tabs */
+
 .tabs-container {
   width: 100%;
 }
@@ -10,20 +40,24 @@
   background-color: #fff !important;
 }
 
-.team-data {
-  margin: 3rem;
+/* Tabs End */
+
+
+/* Standings Tab */
+
+
+
+.team-item {
+  cursor: pointer;
 }
 
-.circle2 {
-  position: absolute;
-  width: 42px;
-  height: 42px;
-  overflow: hidden;
-  left: 15px;
-  bottom: 20px;
-  display: inline-block;
-  vertical-align: middle;
-}
+/* Standings Tab End */
+
+
+
+
+
+/* Matches Tab */
 
 .match-item {
   display: flex;
@@ -31,7 +65,7 @@
 }
 
 .home-team {
-  margin-bottom: 10px;
+  margin-bottom: 5px;
 }
 
 .home-team, .away-team {
@@ -59,3 +93,17 @@
 .date, .time {
   margin: 0;
 }
+
+.date {
+  margin-bottom: 5px;
+}
+/* Matches Tab */
+
+/* Team Detail */
+.team-data {
+  margin-top: 3rem;
+}
+
+
+
+/* Team Detail End */

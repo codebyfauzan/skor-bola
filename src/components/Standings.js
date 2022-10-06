@@ -29,20 +29,47 @@ function Standings() {
     navigate(`/team/${idData}`);
   };
 
+  const handleTeamName = (teamName) => {
+    let shortenTeamName = teamName.split(" ")[0];
+    if (teamName === "Manchester City FC") {
+      shortenTeamName = "Man City";
+    }
+    if (teamName === "Manchester United FC") {
+      shortenTeamName = "Man Utd";
+    }
+    if (teamName === "AFC Bournemouth") {
+      shortenTeamName = "Bournemouth";
+    }
+    if (teamName === "Aston Villa FC") {
+      shortenTeamName = "Aston Villa";
+    }
+    if (teamName === "West Ham United FC") {
+      shortenTeamName = "West Ham";
+    }
+    if (teamName === "Crystal Palace FC") {
+      shortenTeamName = "Crystal Palace";
+    }
+    if (teamName === "Nottingham Forest FC") {
+      shortenTeamName = "Nottingham Forest";
+    }
+
+    return shortenTeamName;
+  };
+
   return (
-    <div className="container">
+    <div className="container container-sm">
       <div className="row">
         <table className="highlight col s12">
-          <thead>
+          <thead className="grey-text">
             <tr>
-              <th>#</th>
-              <th>Team</th>
-              <th>P</th>
-              <th>W</th>
-              <th>D</th>
-              <th>L</th>
-              <th>Goals</th>
-              <th>PTS</th>
+              <th className="fw-400">#</th>
+              <th className="fw-400">Team</th>
+              <th className="fw-400">P</th>
+              <th className="fw-400">W</th>
+              <th className="fw-400">D</th>
+              <th className="fw-400">L</th>
+              <th className="fw-400">Goals</th>
+              <th className="fw-400">PTS</th>
             </tr>
           </thead>
 
@@ -54,9 +81,10 @@ function Standings() {
                     key={res.team.id}
                     id={res.team.id}
                     onClick={getDetailTeam}
+                    className="team-item"
                   >
-                    <td>{res.position}</td>
-                    <td>{res.team.name}</td>
+                    <td className="fw-700">{res.position}</td>
+                    <td>{handleTeamName(res.team.name)}</td>
                     <td>{res.playedGames}</td>
                     <td>{res.won}</td>
                     <td>{res.draw}</td>

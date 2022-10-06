@@ -19,7 +19,6 @@ function TeamDetail() {
         },
       })
       .then((res) => {
-        console.log(res.data);
         setData(res.data);
       })
       .catch((error) => {
