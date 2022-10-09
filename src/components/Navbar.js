@@ -36,7 +36,12 @@ function Navbar() {
     <>
       <nav className="nav-extended green">
         <div className="nav-wrapper container">
-          <a href="/" className="brand-logo">
+          <a
+            href="/"
+            className={
+              menuStatus === "menu" ? "brand-logo" : "brand-logo--detail-page"
+            }
+          >
             Skor Bola
           </a>
           <a

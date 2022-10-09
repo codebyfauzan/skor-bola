@@ -26,6 +26,22 @@
 
 /* Typography End */
 
+
+/* Navbar */
+nav .brand-logo--detail-page {
+  position: absolute;
+  color: #fff;
+  display: inline-block;
+  font-size: 2.1rem;
+  padding: 0;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+  transform: translateX(-50%);
+}
+
+
+/* Navbar End */
+
 /* Tabs */
 
 .tabs-container {
