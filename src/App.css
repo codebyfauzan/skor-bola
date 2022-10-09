@@ -58,10 +58,19 @@
 
 
 /* Matches Tab */
+.match-list {
+  border: none !important;
+}
 
 .match-item {
   display: flex;
+  flex-direction: column;
   padding: 10px 0 !important;
+  border: none !important;
+}
+
+.round-info {
+  margin-top: 20px;
 }
 
 .home-team {

@@ -68,45 +68,80 @@ function Matches() {
     return status === "POSTPONED" ? "red-medium" : "";
   };
 
+  const handleRound = (res, index) => {
+    if (index === 0) {
+      return `Round ${res.matchday}`;
+    } else if (
+      index > 0 &&
+      data.matches[index].matchday !== data.matches[--index].matchday
+    ) {
+      return `Round ${res.matchday}`;
+    }
+  };
+
   return (
     <div className="container container-sm">
       <div className="row">
-        <ul className="collection">
+        <ul className="collection match-list">
           {data !== null &&
-            data.matches.map((res) => {
+            data.matches.map((res, index) => {
               return (
                 <li key={res.id} className="collection-item col s12 match-item">
-                  <div className="teams col s8">
-                    <div className="home-team">
-                      <span className="home-team-info">
-                        <span className="home-team-name">
-                          {handleTeamName(res.homeTeam.name)}
-                        </span>
-                      </span>
-                      <strong className="home-team-score team-score right-align">
-                        {res.score.fullTime.homeTeam == null
-                          ? ""
-                          : res.score.fullTime.homeTeam}
-                      </strong>
-                    </div>
-                    <div className="away-team">
-                      <span className="away-team-info">
-                        <span className="away-team-name">
-                          {handleTeamName(res.awayTeam.name)}
-                        </span>
-                      </span>
-                      <strong className="away-team-score team-score right-align">
-                        {res.score.fullTime.awayTeam == null
-                          ? ""
-                          : res.score.fullTime.awayTeam}
-                      </strong>
-                    </div>
-                  </div>
-                  <div className="times col s4 center-align">
-                    <p className="date">{handleDate(res.utcDate)}</p>
-                    <p className={`time ${timeElementClass(res.status)}`}>
-                      {handleStatus(res)}
+                  <div
+                    style={{
+                      display: handleRound(res, index) ? "block" : "none",
+                    }}
+                    className="round-info col s12"
+                  >
+                    <p className="round-name col s12">
+                      <strong>{handleRound(res, index)}</strong>
                     </p>
+                  </div>
+                  <div className="teams-info col s12">
+                    <div className="teams col s8">
+                      <div
+                        className={
+                          res.score.winner === "HOME_TEAM"
+                            ? "home-team"
+                            : "home-team grey-text darken-2"
+                        }
+                      >
+                        <span className="home-team-info">
+                          <span className="home-team-name">
+                            {handleTeamName(res.homeTeam.name)}
+                          </span>
+                        </span>
+                        <strong className="home-team-score team-score right-align">
+                          {res.score.fullTime.homeTeam == null
+                            ? ""
+                            : res.score.fullTime.homeTeam}
+                        </strong>
+                      </div>
+                      <div
+                        className={
+                          res.score.winner === "AWAY_TEAM"
+                            ? "away-team"
+                            : "away-team grey-text darken-2"
+                        }
+                      >
+                        <span className="away-team-info">
+                          <span className="away-team-name">
+                            {handleTeamName(res.awayTeam.name)}
+                          </span>
+                        </span>
+                        <strong className="away-team-score team-score right-align">
+                          {res.score.fullTime.awayTeam == null
+                            ? ""
+                            : res.score.fullTime.awayTeam}
+                        </strong>
+                      </div>
+                    </div>
+                    <div className="times col s4 center-align grey-text darken-2">
+                      <p className="date">{handleDate(res.utcDate)}</p>
+                      <p className={`time ${timeElementClass(res.status)}`}>
+                        {handleStatus(res)}
+                      </p>
+                    </div>
                   </div>
                 </li>
               );
