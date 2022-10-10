@@ -82,11 +82,11 @@ nav .brand-logo--detail-page {
   display: flex;
   flex-direction: column;
   padding: 10px 0 !important;
-  border: none !important;
 }
 
 .round-info {
   margin-top: 20px;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .home-team {
@@ -124,11 +124,29 @@ nav .brand-logo--detail-page {
 }
 /* Matches Tab */
 
+
+/* Favourite Tab */
+.team-fav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.team-fav-item {
+  min-height: unset !important;
+  padding-top: 20px !important;
+  padding-bottom: 20px !important;
+}
+/* Favourite Tab End */
+
+
+
+
 /* Team Detail */
 .team-data {
   margin-top: 3rem;
 }
 
-
-
 /* Team Detail End */
+
+

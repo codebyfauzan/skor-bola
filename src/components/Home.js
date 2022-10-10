@@ -2,6 +2,7 @@ import React from "react";
 import M from "materialize-css";
 import Matches from "./Matches";
 import Standings from "./Standings";
+import Favourites from "./Favourites";
 
 // main component
 class Home extends React.Component {
@@ -52,7 +53,9 @@ class Home extends React.Component {
         {/* Matches End */}
 
         {/* Favourites */}
-        <div id="favourites"></div>
+        <div id="favourites">
+          <Favourites />
+        </div>
         {/* Favourites End */}
       </>
     );
