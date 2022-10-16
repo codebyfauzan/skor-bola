@@ -19,7 +19,7 @@ export const GlobalProvider = (props) => {
   });
 
   // state teams
-  const [teams, setTeams] = useState(null);
+  const [teams, setTeams] = useState([]);
 
   return (
     <GlobalContext.Provider value={{ navigate, db, teams, setTeams }}>
