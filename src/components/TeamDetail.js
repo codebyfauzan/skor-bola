@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { GlobalContext } from "../context/GlobalContext";
 import axios from "axios";
+import M from "materialize-css";
 
 // variables
 const API_KEY = "7b30bea235784fd8bd4548d09897b06e";
@@ -34,6 +35,7 @@ function TeamDetail() {
       let allTeams = await db.teams.toArray();
       // masukkan semua team ke dalam state
       setTeams(allTeams);
+      M.toast({ html: `${team.name} added to favourite` });
     });
   };
 

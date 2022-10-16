@@ -1,5 +1,6 @@
 import React, { useEffect, useContext } from "react";
 import { GlobalContext } from "../context/GlobalContext";
+import M from "materialize-css";
 
 function Favourites() {
   const { db, teams, setTeams } = useContext(GlobalContext);
@@ -14,10 +15,11 @@ function Favourites() {
     getAllTeams();
   }, [db.teams, setTeams]);
 
-  const deleteTeam = async (id) => {
-    db.teams.delete(id);
+  const deleteTeam = async (team) => {
+    db.teams.delete(team.id);
     let allTeams = await db.teams.toArray();
     setTeams(allTeams);
+    M.toast({ html: `${team.name} deleted from favourite` });
   };
 
   const handleTeamName = (teamName) => {
@@ -51,7 +53,7 @@ function Favourites() {
     <div className="container container-sm">
       <div className="row">
         <ul className="collection col s12">
-          {teams !== null &&
+          {teams !== null ? (
             teams.map((team) => {
               return (
                 <li
@@ -69,7 +71,7 @@ function Favourites() {
                       <p className="grey-text darken-2">{team.area.name}</p>
                     </div>
                     <button
-                      onClick={() => deleteTeam(team.id)}
+                      onClick={() => deleteTeam(team)}
                       className="waves-effect waves-light btn"
                     >
                       <i className="material-icons left">delete</i>Delete
@@ -77,7 +79,10 @@ function Favourites() {
                   </div>
                 </li>
               );
-            })}
+            })
+          ) : (
+            <span>tidak ada tim favorit</span>
+          )}
         </ul>
       </div>
     </div>

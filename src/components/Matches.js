@@ -91,8 +91,8 @@ function Matches() {
                 return (
                   <>
                     <div
-                      id={index}
-                      key={index}
+                      id={res.matchday}
+                      key={res.matchday}
                       style={{
                         display: handleRound(res, index) ? "block" : "none",
                       }}
