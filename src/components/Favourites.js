@@ -53,7 +53,7 @@ function Favourites() {
     <div className="container container-sm">
       <div className="row">
         <ul className="collection col s12">
-          {teams !== null ? (
+          {teams.length > 0 ? (
             teams.map((team) => {
               return (
                 <li
@@ -81,7 +81,7 @@ function Favourites() {
               );
             })
           ) : (
-            <span>tidak ada tim favorit</span>
+            <p className="center-align">tidak ada tim favorit</p>
           )}
         </ul>
       </div>
