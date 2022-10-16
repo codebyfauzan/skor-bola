@@ -91,6 +91,7 @@ function Matches() {
                 return (
                   <>
                     <div
+                      id={index}
                       key={index}
                       style={{
                         display: handleRound(res, index) ? "block" : "none",
@@ -103,6 +104,7 @@ function Matches() {
                     </div>
 
                     <li
+                      id={res.id}
                       key={res.id}
                       className="collection-item col s12 match-item"
                     >
@@ -161,6 +163,7 @@ function Matches() {
               return (
                 <>
                   <li
+                    id={res.id}
                     key={res.id}
                     className="collection-item col s12 match-item"
                   >

@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { GlobalContext } from "../context/GlobalContext";
 import axios from "axios";
-// import "./App.css";
 
 // variables
 const API_KEY = "7b30bea235784fd8bd4548d09897b06e";
 
 function TeamDetail() {
+  const { db, setTeams } = useContext(GlobalContext);
   let { IdData } = useParams();
 
   const [data, setData] = useState(null);
@@ -25,6 +26,17 @@ function TeamDetail() {
         console.log(error);
       });
   }, [IdData]);
+
+  // Fungsi add to favourite
+  const addToFav = (team) => {
+    db.teams.add(team).then(async () => {
+      // ambil semua team di dalam database
+      let allTeams = await db.teams.toArray();
+      // masukkan semua team ke dalam state
+      setTeams(allTeams);
+    });
+  };
+
   return (
     <>
       {data !== null && (
@@ -42,7 +54,11 @@ function TeamDetail() {
             <p>
               Venue : <strong>{data.venue}</strong>
             </p>
-            <button className="waves-effect waves-light btn">
+            <button
+              onClick={() => addToFav(data)}
+              id="addToFav"
+              className="waves-effect waves-light btn"
+            >
               <i className="material-icons left">add_circle</i>Add to Favourites
             </button>
           </div>

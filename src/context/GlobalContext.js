@@ -1,21 +1,28 @@
-import React, { createContext } from "react";
+import React, { createContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import idb from "idb";
+import Dexie from "dexie";
 
 export const GlobalContext = createContext();
 
 export const GlobalProvider = (props) => {
   let navigate = useNavigate();
 
-  // let dbPromised = idb.open("skor-bola", 1, function (upgradeDb) {
-  //   var teamsObjectStore = upgradeDb.createObjectStore("teams", {
-  //     keyPath: "id",
-  //   });
-  //   teamsObjectStore.createIndex("id", "id", { unique: false });
-  // });
+  // buat database
+  const db = new Dexie("skor-bola");
+
+  // buat database store
+  db.version(1).stores({
+    teams: "id",
+  });
+  db.open().catch((error) => {
+    console.log(error.stack || error);
+  });
+
+  // state teams
+  const [teams, setTeams] = useState(null);
 
   return (
-    <GlobalContext.Provider value={{ navigate }}>
+    <GlobalContext.Provider value={{ navigate, db, teams, setTeams }}>
       {props.children}
     </GlobalContext.Provider>
   );
